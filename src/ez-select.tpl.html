@@ -1,0 +1,26 @@
+<div class="ez-select dropdown"> 
+  <div ng-click="open()">
+    <a class="btn btn-default ez-select-toggle" ng-if="!multiple">
+      <span class="text">{{ selectedText }}</span>
+      <span class="caret"></span>
+    </a>
+    <ul ng-if="multiple">
+      <li ng-repeat="option in selectedOptions">
+        {{ option.text }}
+      </li>
+    </ul>
+  </div>
+  <div class="dropdown-menu">
+    <div class="search-box" ng-show="options.length > 10">
+      <input ng-model="form.query" type="text" placeholder="Search options..." class="input-block-level form-control">
+    </div>
+    <ul>
+      <li ng-repeat="option in _options" ng-class="{selected: option._selected}">
+        <a ng-click="select(option)">
+          <span class="text">{{ option.text }}</span>
+          <i ng-show="option._selected" class="selected glyphicon glyphicon-ok"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

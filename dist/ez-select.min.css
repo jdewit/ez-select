@@ -1,0 +1,55 @@
+.ez-select a {
+  cursor: pointer;
+}
+.ez-select .ez-select-toggle {
+  width: 100%;
+  position: relative;
+  text-align: left;
+}
+.ez-select .ez-select-toggle .text {
+  padding-right: 20px;
+}
+.ez-select .ez-select-toggle .caret {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  margin-top: -2px;
+  vertical-align: middle;
+}
+.ez-select .check-mark {
+  float: right;
+}
+.ez-select .dropdown-menu {
+  width: 100%;
+}
+.ez-select .dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.ez-select .dropdown-menu .search-box {
+  padding: 0 5px 5px 5px;
+}
+.ez-select .dropdown-menu a {
+  display: block;
+  position: relative;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.428571429;
+  color: #333;
+  white-space: nowrap;
+}
+.ez-select .dropdown-menu a:hover {
+  color: #262626;
+  text-decoration: none;
+  background-color: #f5f5f5;
+}
+.ez-select .dropdown-menu a i {
+  display: inline-block;
+  position: absolute;
+  margin-top: 2.5px;
+  right: 15px;
+}
