@@ -3,10 +3,13 @@
   "version": "0.0.10",
   "ignore": [
     "**/.*",
-    "node_modules",
-    "bower_components"
+    "index.html",
+    "package.json",
+    "karma.conf.js",
+    "src",
+    "test",
+    "bower.json"
   ],
-  "main": ["dist/ez-select.min.css", "dist/ez-select.min.js", "dist/ez-select.tpl.js"],
   "devDependencies": {
     "jquery": "latest",
     "angular": "latest",
