@@ -6,6 +6,7 @@
     "node_modules",
     "bower_components"
   ],
+  "main": ["dist/ez-select.min.css", "dist/ez-select.min.js", "dist/ez-select.tpl.js"],
   "devDependencies": {
     "jquery": "latest",
     "angular": "latest",

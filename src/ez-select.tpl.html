@@ -1,12 +1,13 @@
 <div class="ez-select dropdown"> 
-  <div ng-click="open()">
+  <div ng-click="open($event)">
     <a class="btn btn-default ez-select-toggle" ng-if="!multiple">
       <span class="text">{{ selectedText }}</span>
       <span class="caret"></span>
     </a>
-    <ul ng-if="multiple">
+    <ul class="tag-container" ng-if="multiple">
       <li ng-repeat="option in selectedOptions">
-        {{ option.text }}
+        <a ng-click="select($event, option)"><i class="glyphicon glyphicon-remove"></i></a>
+        <span class="text">{{ option.text }}</span>
       </li>
     </ul>
   </div>
@@ -16,7 +17,7 @@
     </div>
     <ul>
       <li ng-repeat="option in _options" ng-class="{selected: option._selected}">
-        <a ng-click="select(option)">
+        <a ng-click="select($event, option)">
           <span class="text">{{ option.text }}</span>
           <i ng-show="option._selected" class="selected glyphicon glyphicon-ok"></i>
         </a>

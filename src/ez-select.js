@@ -13,7 +13,7 @@ angular.module('ez.select', [])
     replace: true,
     scope: {
       options: '=options',
-      selectedOptionIds: '=selectedOptionIds',
+      selected: '=selected',
       search: '=search'
     },
     templateUrl: 'ez-select.tpl.html',
@@ -24,38 +24,39 @@ angular.module('ez.select', [])
       var maxChars = $toggle.width() / (fontSize * 0.5);
       var multiple = !!attrs.multiple;
 
+      var closeDropdown = function(e) {
+        $document.unbind('click', closeDropdown);
+        element.removeClass('open');
+      };
+
       return function (scope, element, attrs) {
         scope._options = [];
         scope.selectedOptions = [];
         scope.multiple = multiple;
 
-        var closeDropdown = function(e) {
-          if (!$(e.target).parents('.ez-select').get(0)) {
-            $document.unbind('click', closeDropdown);
-            element.removeClass('open');
-          }
-        };
+        scope.open = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
 
-        scope.open = function() {
           element.addClass('open');
           element.find('.search-box input').trigger('focus');
           $document.click(closeDropdown);
         };
 
-        scope.select = function(option) {
-          if (!option._selected) {
-            scope.selectedOptionIds.push(option.id);
-            scope.selectedOptions.push(option);
-          } else {
-            var i = scope.selectedOptionIds.indexOf(option.id);
+        scope.select = function(e, option) {
+          e.preventDefault();
+          e.stopPropagation();
 
-            if (i !== -1) {
-              scope.selectedOptionIds.splice(i, 1);
-              scope.selectedOptions.splice(i, 1);
+          if (multiple) {
+            if (!option._selected) {
+              scope.selected.push(option.id);
+            } else {
+              scope.selected.splice(scope.selected.indexOf(option.id), 1);
             }
+          } else {
+            scope.selected = option.id;
+            closeDropdown();
           }
-          scope.filter();
-          scope.updateText();
         };
 
         scope.updateText = function() {
@@ -63,12 +64,9 @@ angular.module('ez.select', [])
           var count = 0;
 
           angular.forEach(scope.options, function(option, i) {
-            if (scope.selectedOptionIds.indexOf(option.id) !== -1) {
-              option._selected = true;
+            if (scope.selected.indexOf(option.id) !== -1) {
               str += option[ezSelectConfig.textField] + ', ';
               count++;
-            } else {
-              option._selected = false;
             }
           });
 
@@ -93,7 +91,6 @@ angular.module('ez.select', [])
           scope._options = orderByFilter(orderByFilter(scope._options, ezSelectConfig.textField, true), '_selected', true);
         };
 
-
         scope.$watch('form.query', function(newVal, oldVal) {
           if (scope.search && newVal && newVal.length > 0 && newVal !== oldVal) {
             scope.search(newVal).then(function(data) {
@@ -110,12 +107,32 @@ angular.module('ez.select', [])
           }
         });
 
-        // init
-        scope.updateText();
-        angular.forEach(scope.options, function(option) {
-          if (scope.selectedOptionIds.indexOf(option.id) !== -1) {
-            scope.selectedOptions.push(option);
-          }
+        scope.$watchCollection('selected', function(newVal, oldVal) {
+            angular.forEach(scope.options, function(option, i) {
+              if (multiple) {
+                if (scope.selected.indexOf(option.id) !== -1) {
+                  if (scope.selectedOptions.indexOf(option) === -1) {
+                    scope.selectedOptions.push(option);
+                  }
+                  option._selected = true;
+                } else {
+                  var index = scope.selectedOptions.indexOf(option);
+                  if (index !== -1) {
+                    scope.selectedOptions.splice(index, 1);
+                  }
+                  option._selected = false;
+                }
+              } else {
+                if (scope.selected === option.id) {
+                  console.log('match!');
+                  scope.selectedOptions = [option];
+                  option._selected = true;
+                } else {
+                  option._selected = false;
+                }
+                scope.updateText();
+              }
+            });
         });
       };
     }
