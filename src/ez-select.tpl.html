@@ -1,26 +1,27 @@
-<div class="ez-select dropdown"> 
-  <div ng-click="open($event)">
-    <a class="btn btn-default ez-select-toggle" ng-if="!multiple">
-      <span class="text">{{ selectedText }}</span>
-      <span class="caret"></span>
-    </a>
-    <ul class="tag-container" ng-if="multiple">
-      <li ng-repeat="option in selectedOptions">
-        <a ng-click="select($event, option)"><i class="glyphicon glyphicon-remove"></i></a>
-        <span class="text">{{ option.text }}</span>
-      </li>
-    </ul>
-  </div>
+<div class="ez-select-container"> 
+  <a class="btn btn-default ez-select-toggle" ng-click="open($event)" ng-if="!multiple">
+    <span class="text">{{ selectedText }}</span>
+    <span class="caret"></span>
+  </a>
+  <ul class="tag-container" ng-click="open($event)" ng-if="multiple">
+    <li ng-repeat="option in selectedOptions">
+      <a ng-click="select($event, option)"><i class="glyphicon glyphicon-remove"></i></a>
+      <span class="text">{{ option.text }}</span>
+    </li>
+  </ul>
   <div class="dropdown-menu">
-    <div class="search-box" ng-show="options.length > 10">
+    <div class="search-box" ng-show="searchEnabled">
       <input ng-model="form.query" type="text" placeholder="Search options..." class="input-block-level form-control">
     </div>
     <ul>
-      <li ng-repeat="option in _options" ng-class="{selected: option._selected}">
+      <li ng-repeat="option in options | object2array | filter:'query'" ng-class="{selected: option._selected}">
         <a ng-click="select($event, option)">
           <span class="text">{{ option.text }}</span>
           <i ng-show="option._selected" class="selected glyphicon glyphicon-ok"></i>
         </a>
+      </li>
+      <li ng-if="empty">
+        <a>No options found</a>
       </li>
     </ul>
   </div>

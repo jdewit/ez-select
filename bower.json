@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "jquery-ui": "~1.10.3",
-    "angular": "~1.2.6"
+    "angular": "~1.2.6",
+    "ez-object2array": "latest"
   }
 }

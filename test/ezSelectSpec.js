@@ -29,6 +29,22 @@ describe('ez-select', function() {
       }
     ];
 
+    _scope.options2 = {
+      '1': {
+        id: '1',
+        text: 'One'
+      },
+      '2': {
+        id: '2',
+        text: 'Two'
+      },
+      '3': {
+        id: '3',
+        text: 'Three'
+      }
+    };
+
+
     _scope.selectedOptions = ['2'];
 
     _scope.search = false;
@@ -42,13 +58,14 @@ describe('ez-select', function() {
     };
   }));
 
-  //it('should init ez-select', function() {
+  it('should init ez-select', function() {
+    assert.isTrue(true);
     //assert.lengthOf(el.find('li'), 3, 'should render 3 options');
     //assert.equal(el.find('li:eq(0) .text').text(), 'Two', 'should render selected option first');
     //assert.isTrue(el.find('li:eq(0)').hasClass('selected'), 'should have selected class');
     //assert.equal(el.find('li:eq(1) .text').text(), 'Three', 'should render text');
     //assert.equal(el.find('.ez-select-toggle .text').text(), 'Two', 'should render selected option as default text');
-  //});
+  });
 
   //it('should add & remove items on click', function() {
     //el.find('.ez-select-toggle').click();

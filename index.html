@@ -11,14 +11,14 @@
   </style>
 
   <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min.js"></script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap.js"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
+  <script src="https://rawgithub.com/jdewit/ez-object2array/master/dist/ez-object2array.min.js"></script>
 
   <script src="src/ez-select.js"></script>
   <script src="dist/ez-select.tpl.js"></script>
 
   <script>
-      angular.module('myApp', ['ez.select', 'ui.bootstrap'])
+      angular.module('myApp', ['ez.select'])
 
       .controller('AppCtrl', ['$scope', '$q', '$timeout', function AppCtrl($scope, $q, $timeout) {
 
@@ -54,7 +54,9 @@
           {id: '12', text: 'Twelve'}
         ];
 
-        $scope.selectedOptionId = '3';
+        $scope.options2 = [];
+
+        $scope.selectedOptionId = '';
 
         $scope.form = {};
 
@@ -63,13 +65,13 @@
 
           $timeout(function() {
             var results = [
-              {id: (Math.floor(Math.random() * 1000 + 1)), text: query + (Math.floor(Math.random() * 100 + 1))}, 
-              {id: (Math.floor(Math.random() * 1000 + 1)), text: query + (Math.floor(Math.random() * 100 + 1))}, 
-              {id: (Math.floor(Math.random() * 1000 + 1)), text: query + (Math.floor(Math.random() * 100 + 1))}, 
-              {id: (Math.floor(Math.random() * 1000 + 1)), text: query + (Math.floor(Math.random() * 100 + 1))}
+              {id: (Math.floor(Math.random() * 10 + 1)), text: query + (Math.floor(Math.random() * 10 + 1))}, 
+              {id: (Math.floor(Math.random() * 10 + 1)), text: query + (Math.floor(Math.random() * 10 + 1))}, 
+              {id: (Math.floor(Math.random() * 10 + 1)), text: query + (Math.floor(Math.random() * 10 + 1))}, 
+              {id: (Math.floor(Math.random() * 10 + 1)), text: query + (Math.floor(Math.random() * 10 + 1))}
             ];
 
-            deferred.resolve(results);
+            deferred.resolve({data: results});
           }, 500);
 
           return deferred.promise;
@@ -92,11 +94,21 @@
       <div class="row">
         <div class="col-md-6">
           <label>Multi Select</label>
-          <ez-select options="options1" selected="selectedOptionIds" ez-config="{idField: 'id', textField: 'text'}" multiple="true" search="search" style="width: 200px;"></ez-select>
+          <!--<ez-select options="options1" selected="selectedOptionIds" selectedOptions="selectedOptions" ez-config="{idField: 'id', textField: 'text'}" search="search" style="width: 200px;"></ez-select>-->
         </div>
+      </div>
+      <div class="row">
         <div class="col-md-6">
-          <label>Single Select</label>
-          <ez-select options="options2" selected="selectedOptionId" ez-config="{idField: 'id', textField: 'text'}" search="search" style="width: 200px;"></ez-select>
+          <label>Single Select With Search</label>
+          <ez-select options="options2" selectedId="selectedOptionId" selectedOption="selectedOption" search="search" style="width: 200px;"></ez-select>
+          <b>SelectedOptionId:</b> {{ selectedOptionId }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Single Select Without Search</label>
+          <ez-select options="options1" selectedId="selectedOptionId3" selectedOption="selectedOption" style="width: 200px;"></ez-select>
+          <b>SelectedOptionId:</b> {{ selectedOptionId }}
         </div>
       </div>
       <hr>

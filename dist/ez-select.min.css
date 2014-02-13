@@ -1,4 +1,7 @@
-.ez-select .tag-container {
+.ez-select-container {
+  position: relative;
+}
+.ez-select-container .tag-container {
   height: auto !important;
   min-height: 26px;
   height: 1%;
@@ -15,7 +18,7 @@
   background-image: -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
   background-image: linear-gradient(top, #eeeeee 1%, #ffffff 15%);
 }
-.ez-select .tag-container li {
+.ez-select-container .tag-container li {
   float: left;
   padding: 3px 5px 3px 5px;
   margin: 3px 0 3px 5px;
@@ -40,13 +43,13 @@
   background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
   background-image: linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
 }
-.ez-select .tag-container li a {
+.ez-select-container .tag-container li a {
   cursor: pointer !important;
 }
-.ez-select .tag-container li i {
+.ez-select-container .tag-container li i {
   color: #333;
 }
-.ez-select .option-remove {
+.ez-select-container .option-remove {
   display: block;
   width: 12px;
   height: 13px;
@@ -56,41 +59,41 @@
   font-size: 1px;
   outline: none;
 }
-.ez-select a {
+.ez-select-container a {
   cursor: pointer;
 }
-.ez-select .ez-select-toggle {
+.ez-select-container .ez-select-toggle {
   width: 100%;
   position: relative;
   text-align: left;
 }
-.ez-select .ez-select-toggle .text {
+.ez-select-container .ez-select-toggle .text {
   padding-right: 20px;
 }
-.ez-select .ez-select-toggle .caret {
+.ez-select-container .ez-select-toggle .caret {
   position: absolute;
   top: 50%;
   right: 12px;
   margin-top: -2px;
   vertical-align: middle;
 }
-.ez-select .check-mark {
+.ez-select-container .check-mark {
   float: right;
 }
-.ez-select .dropdown-menu {
+.ez-select-container .dropdown-menu {
   width: 100%;
 }
-.ez-select .dropdown-menu ul {
+.ez-select-container .dropdown-menu ul {
   list-style: none;
   padding: 0;
   margin: 0;
   max-height: 200px;
   overflow-y: auto;
 }
-.ez-select .dropdown-menu .search-box {
+.ez-select-container .dropdown-menu .search-box {
   padding: 0 5px 5px 5px;
 }
-.ez-select .dropdown-menu a {
+.ez-select-container .dropdown-menu a {
   display: block;
   position: relative;
   padding: 3px 20px;
@@ -100,12 +103,12 @@
   color: #333;
   white-space: nowrap;
 }
-.ez-select .dropdown-menu a:hover {
+.ez-select-container .dropdown-menu a:hover {
   color: #262626;
   text-decoration: none;
   background-color: #f5f5f5;
 }
-.ez-select .dropdown-menu a i {
+.ez-select-container .dropdown-menu a i {
   display: inline-block;
   position: absolute;
   margin-top: 2.5px;

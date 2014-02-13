@@ -9,6 +9,7 @@ module.exports = function(config) {
       'bower_components/jquery/jquery.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/ez-object2array/dist/ez-object2array.min.js',
 
       // our app
       'src/ez-select.js',
