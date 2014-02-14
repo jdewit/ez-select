@@ -12,7 +12,7 @@ describe('ez-select', function() {
     el = angular.element('<ez-select options="options" selected="selectedOptions" data-multiple="true"></ez-select>');
 
     el2 = angular.element('<ez-select options="options2" selected="selectedOption2" search="true"></ez-select>');
-    el3 = angular.element('<ez-select options="options3" selected="selectedOption3" data-url="/api/test/search"></ez-select>');
+    el3 = angular.element('<ez-select options="options3" selected="selectedOption3" data-placeholder="Ajax Search" data-url="/api/test/search"></ez-select>');
 
     // should sort Two, One, Three
     _scope.options = [
@@ -129,5 +129,9 @@ describe('ez-select', function() {
 
     setQuery(el3, '');
     assert.lengthOf(el3.isolateScope()._options, 0, 'should have 0 options available');
+  });
+
+  it('should be able to override defaults', function() {
+    assert.equal(el3.find('.ez-select-toggle .text').text(), 'Ajax Search', 'Set placeholder');
   });
 });

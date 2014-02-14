@@ -3,7 +3,8 @@
 angular.module('ez.select', ['ez.object2array'])
 
 .constant('ezSelectConfig', {
-  method: 'GET'
+  method: 'GET',
+  placeholder: 'Select an option'
 })
 
 .directive('ezSelect', ['ezSelectConfig', '$document', '$q', '$http', 'object2arrayFilter', 'filterFilter', 'orderByFilter', function (ezSelectConfig, $document, $q, $http, object2arrayFilter, filterFilter, orderByFilter) {
@@ -22,6 +23,7 @@ angular.module('ez.select', ['ez.object2array'])
       var fontSize = parseFloat($toggle.css('font-size'), 10);
       var maxChars = $toggle.width() / (fontSize * 0.5);
       var method = attrs.method || ezSelectConfig.method;
+      var placeholder = attrs.placeholder || ezSelectConfig.placeholder;
 
       var closeDropdown = function(e) {
         if (!$(e.target).is('input')) { // dont close on search input click
@@ -121,7 +123,7 @@ angular.module('ez.select', ['ez.object2array'])
           }
 
           if (!str) {
-            str = 'Select an option';
+            str = placeholder;
           } else if (str.length > maxChars) { // do not allow for text to expand the widgets width
             if (scope.multiple) {
               str = scope.selected.length + ' selected';
