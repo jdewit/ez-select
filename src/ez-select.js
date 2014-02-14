@@ -18,8 +18,7 @@ angular.module('ez.select', ['ez.object2array'])
     replace: true,
     scope: {
       options: '=options',
-      selected: '=selected',
-      search: '=search'
+      selected: '=selected'
     },
     templateUrl: 'ez-select-tpl.html',
     compile: function(element, attrs) {
@@ -55,7 +54,7 @@ angular.module('ez.select', ['ez.object2array'])
           scope.ajaxSearch = true;
           scope.showSearchInput = true;
         } else {
-          scope.showSearchInput = !!scope.search;
+          scope.showSearchInput = !!attrs.search;
         }
 
         scope.filter = function() {
