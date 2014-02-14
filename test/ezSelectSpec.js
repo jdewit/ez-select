@@ -120,9 +120,9 @@ describe('ez-select', function() {
   });
 
   it('should use ajax search to get options if url is set', function() {
-    $httpBackend.expectGET('/api/test/search?q=t').respond([{id: "10", text: "Ten"}, {id: "12", text: "Twelve"}]);
+    $httpBackend.expectGET('/api/test/search?q=tw').respond([{id: "2", text: "Two"}, {id: "12", text: "Twelve"}]);
 
-    setQuery(el3, 't');
+    setQuery(el3, 'tw');
     $httpBackend.flush();
 
     assert.lengthOf(el3.isolateScope()._options, 2, 'should have 2 options available');
@@ -133,5 +133,6 @@ describe('ez-select', function() {
 
   it('should be able to override defaults', function() {
     assert.equal(el3.find('.ez-select-toggle .text').text(), 'Ajax Search', 'Set placeholder');
+    assert.equal(el3.find('.dropdown-menu li:last-child a').text(), 'Enter 2 or more characters...', 'Set placeholder');
   });
 });

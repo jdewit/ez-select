@@ -1,24 +1,36 @@
 .ez-select-container {
   position: relative;
 }
+.ez-select-container .caret {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+}
+.ez-select-container .placeholder {
+  color: #999;
+}
 .ez-select-container .tag-container {
-  height: auto !important;
-  min-height: 32px;
-  height: 1%;
-  margin: 0;
-  padding: 0;
-  position: relative;
   border: 1px solid #aaa;
   cursor: text;
   overflow: hidden;
-  list-style: none;
   background-color: #fff;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
   background-image: -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
   background-image: -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
   background-image: linear-gradient(top, #eeeeee 1%, #ffffff 15%);
+  list-style: none;
+  margin: 0;
+  padding: 0 35px 0 0;
+  height: auto !important;
+  min-height: 32px;
+  height: 1%;
+  position: relative;
 }
-.ez-select-container .tag-container li {
+.ez-select-container .tag-container li.placeholder {
+  padding: 5px 10px;
+}
+.ez-select-container .tag-container li:not(.placeholder) {
   float: left;
   padding: 3px 5px 3px 5px;
   margin: 3px 0 3px 5px;
@@ -43,10 +55,10 @@
   background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
   background-image: linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
 }
-.ez-select-container .tag-container li a {
+.ez-select-container .tag-container li:not(.placeholder) a {
   cursor: pointer !important;
 }
-.ez-select-container .tag-container li i {
+.ez-select-container .tag-container li:not(.placeholder) i {
   color: #333;
 }
 .ez-select-container .option-remove {
@@ -96,7 +108,7 @@
 .ez-select-container .dropdown-menu a {
   display: block;
   position: relative;
-  padding: 3px 20px;
+  padding: 3px 10px;
   clear: both;
   font-weight: normal;
   line-height: 1.428571429;

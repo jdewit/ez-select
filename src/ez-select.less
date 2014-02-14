@@ -1,24 +1,39 @@
 .ez-select-container {
     position: relative;
 
+    .caret {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 10;
+    }
+
+  .placeholder {
+    color: #999;
+  }
+
   .tag-container {
-    height: auto !important;
-    min-height: 32px;
-    height: 1%;
-    margin: 0;
-    padding: 0;
-    position: relative;
     border: 1px solid #aaa;
     cursor: text;
     overflow: hidden;
-    list-style: none;
     background-color: #fff;
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eee), color-stop(15%, #fff));
     background-image: -webkit-linear-gradient(top, #eee 1%, #fff 15%);
     background-image: -moz-linear-gradient(top, #eee 1%, #fff 15%);
     background-image: linear-gradient(top, #eee 1%, #fff 15%);
+    list-style: none;
+    margin: 0;
+    padding: 0 35px 0 0;
+    height: auto !important;
+    min-height: 32px;
+    height: 1%;
+    position: relative;
 
-    li {
+    li.placeholder {
+      padding: 5px 10px;
+    }
+
+    li:not(.placeholder) {
       float: left;
       padding: 3px 5px 3px 5px;
       margin: 3px 0 3px 5px;
@@ -111,7 +126,7 @@
 
       position: relative;
 
-      padding: 3px 20px;
+      padding: 3px 10px;
       clear: both;
       font-weight: normal;
       line-height: 1.428571429;

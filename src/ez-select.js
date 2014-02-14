@@ -4,7 +4,12 @@ angular.module('ez.select', ['ez.object2array'])
 
 .constant('ezSelectConfig', {
   method: 'GET',
-  placeholder: 'Select an option'
+  placeholder: 'Select an option',
+  multiPlaceholder: 'Click to select an option',
+  searchPlaceholder: 'Search...',
+  searchHelpText: 'Enter $ or more characters...',
+  minSearchChars: 2,
+  emptyText: 'No options found'
 })
 
 .directive('ezSelect', ['ezSelectConfig', '$document', '$q', '$http', 'object2arrayFilter', 'filterFilter', 'orderByFilter', function (ezSelectConfig, $document, $q, $http, object2arrayFilter, filterFilter, orderByFilter) {
@@ -23,19 +28,28 @@ angular.module('ez.select', ['ez.object2array'])
       var fontSize = parseFloat($toggle.css('font-size'), 10);
       var maxChars = $toggle.width() / (fontSize * 0.5);
       var method = attrs.method || ezSelectConfig.method;
-      var placeholder = attrs.placeholder || ezSelectConfig.placeholder;
+      var emptyText = attrs.emptyText || ezSelectConfig.emptyText;
+      var searchHelpText = attrs.searchHelpText || ezSelectConfig.searchHelpText;
+      var minSearchChars = attrs.minSearchChars || ezSelectConfig.minSearchChars;
 
       var closeDropdown = function(e) {
-        if (!$(e.target).is('input')) { // dont close on search input click
-          $document.unbind('click', closeDropdown);
-          element.removeClass('open');
+        if (e && $(e.target).parents('.ez-select-container').get(0) === element.get(0)) {
+          return false;
         }
+
+        $document.unbind('click', closeDropdown);
+        element.removeClass('open');
       };
 
       return function (scope, element, attrs) {
+        scope.form = {query: ''};
         scope.query = '';
         scope.multiple = !!attrs.multiple;
         scope._options = [];
+        scope.placeholder = attrs.placeholder || ezSelectConfig.placeholder;
+        scope.multiPlaceholder = attrs.multiPlaceholder || ezSelectConfig.multiPlaceholder;
+        scope.searchPlaceholder = attrs.searchPlaceholder || ezSelectConfig.searchPlaceholder;
+        scope.emptyText = false;
 
         if (!!attrs.url) {
           scope.ajaxSearch = true;
@@ -52,15 +66,30 @@ angular.module('ez.select', ['ez.object2array'])
           if (scope.query) {
             scope._options = filterFilter(scope._options, {text: scope.query});
           }
+
+          // update emptyText
+          if (scope.ajaxSearch) {
+            if (scope.form.query.length < minSearchChars) {
+              scope.emptyText = searchHelpText.replace('$', (parseInt(minSearchChars, 10) - scope.form.query.length));
+            } else if (!scope._options.length) {
+              scope.emptyText = emptyText;
+            } else {
+              scope.emptyText = false;
+            }
+          } else {
+            if (!scope._options.length) {
+              scope.emptyText = emptyText;
+            } else {
+              scope.emptyText = false;
+            }
+          }
+
         };
 
         /**
          * Open dropdown menu
          */
         scope.open = function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-
           if (!element.hasClass('open')) {
             element.addClass('open');
             element.find('.search-box input').trigger('focus');
@@ -95,7 +124,7 @@ angular.module('ez.select', ['ez.object2array'])
           }
 
           if (!scope.multiple) {
-            closeDropdown(e);
+            closeDropdown();
           }
         };
 
@@ -123,7 +152,7 @@ angular.module('ez.select', ['ez.object2array'])
           }
 
           if (!str) {
-            str = placeholder;
+            str = scope.placeholder;
           } else if (str.length > maxChars) { // do not allow for text to expand the widgets width
             if (scope.multiple) {
               str = scope.selected.length + ' selected';
@@ -143,7 +172,7 @@ angular.module('ez.select', ['ez.object2array'])
         var req;
         scope.$watch('form.query', function(newVal, oldVal) {
           if (scope.ajaxSearch) {
-            if (newVal && newVal !== oldVal) {
+            if (newVal && newVal !== oldVal && newVal.length >= minSearchChars) {
               if (req === true)  {
                 canceler.resolve();
                 canceler = $q.defer();

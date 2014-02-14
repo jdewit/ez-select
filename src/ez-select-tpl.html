@@ -1,17 +1,20 @@
 <div class="ez-select-container"> 
-  <a class="btn btn-default ez-select-toggle" ng-click="open($event)" ng-if="!multiple">
+  <span class="caret"></span>
+  <a class="btn btn-default ez-select-toggle" ng-click="open($event)" ng-class="{placeholder: !selected.length}" ng-if="!multiple">
     <span class="text">{{ selectedText }}</span>
-    <span class="caret"></span>
   </a>
   <ul class="tag-container" ng-click="open($event)" ng-if="multiple">
-    <li ng-repeat="option in _options | filter:{_selected:true}">
+    <li ng-repeat="option in options | filter:{_selected:true}">
       <a ng-click="select($event, option)"><i class="glyphicon glyphicon-remove"></i></a>
       <span class="text">{{ option.text }}</span>
+    </li>
+    <li class="placeholder" ng-if="!selected.length">
+      {{ multiPlaceholder }}
     </li>
   </ul>
   <div class="dropdown-menu">
     <div class="search-box" ng-show="showSearchInput">
-      <input ng-model="form.query" type="text" placeholder="Search options..." class="input-block-level form-control">
+      <input ng-model="form.query" type="text" placeholder="{{ searchPlaceholder }}" class="search-input input-block-level form-control">
     </div>
     <ul>
       <li ng-repeat="option in _options" ng-class="{selected: option._selected}">
@@ -20,8 +23,8 @@
           <i ng-show="option._selected" class="selected glyphicon glyphicon-ok"></i>
         </a>
       </li>
-      <li ng-if="!_options.length">
-        <a>No options found</a>
+      <li ng-if="emptyText">
+        <a>{{ emptyText }}</a>
       </li>
     </ul>
   </div>

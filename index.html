@@ -16,7 +16,6 @@
   <script src="https://rawgithub.com/jdewit/ez-object2array/master/dist/ez-object2array.min.js"></script>
 
   <script src="src/ez-select.js"></script>
-  <script src="test/helper/searchMock.js"></script>
   <script src="dist/ez-select-tpl.js"></script>
 
   <script>
@@ -87,33 +86,33 @@
       <h1>ez-select</h1>
     </div>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label>Multi Select</label>
-        <ez-select options="options1" selected="selected1" data-multiple="true" search="search" style="width: 200px;"></ez-select>
+        <ez-select options="options1" selected="selected1" data-multiple="true" search="true"></ez-select>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <h5>Selected</h5>
         {{ selected1 }}
       </div>
     </div>
     <hr>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label>Single Select With AJAX Search</label>
-        <ez-select options="options2" selected="selected2" data-placeholder="Ajax Search" data-url="/api/test/search" style="width: 200px;"></ez-select>
+        <ez-select options="options2" selected="selected2" data-placeholder="Ajax Search" data-url="/api/test/search" data-min-search-chars="1" style="width: 300px;"></ez-select>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <h5>Selected:</h5> 
         {{ selected2 }}
       </div>
     </div>
     <hr>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <label>Single Select With Search & options in object format</label>
-        <ez-select options="options3" selected="selected3" data-search="true" style="width: 200px;"></ez-select>
+        <ez-select options="options3" selected="selected3" data-search="true"></ez-select>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <h5>Selected:</h5> 
         {{ selected3 }}
       </div>
