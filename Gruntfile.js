@@ -70,8 +70,8 @@ module.exports = function(grunt) {
     },
     ngtemplates: {
       ezSelect: {
-        src:      'src/ez-select.tpl.html',
-        dest:     'dist/ez-select.tpl.js',
+        src:      'src/*.html',
+        dest:     'dist/ez-select-tpl.js',
         options: {
           module: 'ez.select',
           url: function(url) { return url.replace('src/', ''); }

@@ -1,19 +1,20 @@
 describe('ez-select', function() {
-  var el, _scope, setQuery, $q, $timeout;
+  var el, _scope, setQuery, $q, $httpBackend;
 
   beforeEach(module('ez.select'));
 
-  beforeEach(inject(function($templateCache, $rootScope, $compile, _$q_, _$timeout_) {
+  beforeEach(inject(function($rootScope, $compile, _$q_, _$httpBackend_) {
     $q = _$q_;
-    $timeout = _$timeout_;
-		template = $templateCache.get('src/ez-select.tpl.html');
-		$templateCache.put('ez-select.tpl.html', template);
+    $httpBackend = _$httpBackend_;
 
     _scope = $rootScope.$new();
 
-    el = angular.element('<ez-select options="options" selected-options="selectedOptions" search="search"></ez-select>');
+    el = angular.element('<ez-select options="options" selected="selectedOptions" data-multiple="true"></ez-select>');
 
-    // will sort Three, Two, One
+    el2 = angular.element('<ez-select options="options2" selected="selectedOption2" search="true"></ez-select>');
+    el3 = angular.element('<ez-select options="options3" selected="selectedOption3" data-url="/api/test/search"></ez-select>');
+
+    // should sort Two, One, Three
     _scope.options = [
       {
         id: '1',
@@ -44,79 +45,89 @@ describe('ez-select', function() {
       }
     };
 
-
     _scope.selectedOptions = ['2'];
+    _scope.selectedOption2 = '2';
+    _scope.selectedOption3 = '';
 
     _scope.search = false;
 
     $compile(el)(_scope);
+    $compile(el2)(_scope);
+    $compile(el3)(_scope);
     _scope.$digest();
 
-    setQuery = function(val) {
-      el.find('.search-box input').val(val).trigger('input').trigger('blur');
+    setQuery = function(element, val) {
+      element.find('.search-box input').val(val).trigger('input').trigger('blur');
       _scope.$apply();
     };
   }));
 
-  it('should init ez-select', function() {
-    assert.isTrue(true);
-    //assert.lengthOf(el.find('li'), 3, 'should render 3 options');
-    //assert.equal(el.find('li:eq(0) .text').text(), 'Two', 'should render selected option first');
-    //assert.isTrue(el.find('li:eq(0)').hasClass('selected'), 'should have selected class');
-    //assert.equal(el.find('li:eq(1) .text').text(), 'Three', 'should render text');
-    //assert.equal(el.find('.ez-select-toggle .text').text(), 'Two', 'should render selected option as default text');
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
   });
 
-  //it('should add & remove items on click', function() {
-    //el.find('.ez-select-toggle').click();
-    //el.find('li:eq(0) a').click();
+  it('multi - should init ez-select', function() {
+    assert.lengthOf(el.find('.dropdown-menu li'), 3, 'should render 3 options');
+    assert.equal(el.find('.dropdown-menu li:eq(0) .text').text(), 'Two', 'should render selected option first');
+    assert.equal(el.find('.dropdown-menu li:eq(1) .text').text(), 'One', 'should sort options by name');
+    assert.equal(el.find('.dropdown-menu li:eq(2) .text').text(), 'Three', 'should sort options by name');
+    assert.isTrue(el.find('.dropdown-menu li:eq(0)').hasClass('selected'), 'should have selected class');
+    assert.equal(el.find('.tag-container .text:eq(0)').text(), 'Two', 'should render selected option as a tag');
+  });
 
-    //assert.equal(el.find('.ez-select-toggle .text').text(), 'Select an option', 'should set initial text to default when none selected');
-    //el.find('li:eq(0) a').click();
-    //el.find('li:eq(1) a').click();
+  it('single - should init ez-select', function() {
+    assert.lengthOf(el2.find('.dropdown-menu li'), 3, 'should render 3 options');
+    assert.equal(el2.find('.dropdown-menu li:eq(0) .text').text(), 'Two', 'should render selected option first');
+    assert.equal(el2.find('.dropdown-menu li:eq(1) .text').text(), 'One', 'should sort options by name');
+    assert.equal(el2.find('.dropdown-menu li:eq(2) .text').text(), 'Three', 'should sort options by name');
+    assert.isTrue(el2.find('.dropdown-menu li:eq(0)').hasClass('selected'), 'should have selected class');
+    assert.equal(el2.find('.ez-select-toggle .text').text(), 'Two', 'should render selected text');
+  });
 
-    //assert.lengthOf(_scope.selectedOptions, 2, 'should have 2 options selected');
-    //assert.includeMembers(_scope.selectedOptions, ['3', '2']);
-    //el.find('li:eq(1) a').click();
-    //assert.lengthOf(_scope.selectedOptions, 1, 'should have 1 options selected');
-    //el.find('li:eq(0) a').click();
-    //assert.lengthOf(_scope.selectedOptions, 0, 'should have 0 options selected');
-  //});
+  it('single - should add & remove selection on click', function() {
+    el2.find('.ez-select-toggle').click();
+    el2.find('li:eq(0) a').click();
 
-  //it('should filter options with search query', function() {
-    //setQuery('One');
-    //assert.lengthOf(el.isolateScope()._options, 1, 'should have 1 option available');
+    assert.equal(el2.find('.ez-select-toggle .text').text(), 'Select an option', 'should set initial text to default when none selected');
+  });
 
-    //setQuery('T');
-    //assert.lengthOf(el.isolateScope()._options, 2, 'should have 2 options available');
+  it('multi - should add & remove items on click', function() {
+    el.find('.ez-select-toggle').click();
+    el.find('.dropdown-menu li:eq(0) a').click();
+    assert.lengthOf(_scope.selectedOptions, 0, 'should have 0 options selected');
 
-    //setQuery('');
-    //assert.lengthOf(el.isolateScope()._options, 3, 'should have 3 options available');
-  //});
+    el.find('.dropdown-menu li:eq(0) a').click(); // select One
+    el.find('.dropdown-menu li:eq(1) a').click(); // select Three
 
-  //it('should use search function to get options if it is set', function() {
-    //_scope.search = function() {
-      //var deferred = $q.defer();
+    assert.lengthOf(_scope.selectedOptions, 2, 'should have 2 options selected');
+    assert.includeMembers(_scope.selectedOptions, ['1', '3']);
+    el.find('li:eq(1) a').click();
+    assert.lengthOf(_scope.selectedOptions, 1, 'should have 1 options selected');
+    el.find('li:eq(0) a').click();
+    assert.lengthOf(_scope.selectedOptions, 0, 'should have 0 options selected');
+  });
 
-      //$timeout(function() {
-        //var results = [
-          //{id: '12', text: 'Twelve'},
-          //{id: '13', text: 'Thirteen'}
-        //];
+  it('should filter options with search query', function() {
+    setQuery(el, 'One');
+    assert.lengthOf(el.isolateScope()._options, 1, 'should have 1 option available');
 
-        //deferred.resolve(results);
-      //}, 500);
+    setQuery(el, 'T');
+    assert.lengthOf(el.isolateScope()._options, 2, 'should have 2 options available');
 
-      //return deferred.promise;
-    //};
+    setQuery(el, '');
+    assert.lengthOf(el.isolateScope()._options, 3, 'should have 3 options available');
+  });
 
-    //setQuery('t');
-    //$timeout.flush();
+  it('should use ajax search to get options if url is set', function() {
+    $httpBackend.expectGET('/api/test/search?q=t').respond([{id: "10", text: "Ten"}, {id: "12", text: "Twelve"}]);
 
-    //assert.lengthOf(el.isolateScope()._options, 4, 'should have 4 options available');
+    setQuery(el3, 't');
+    $httpBackend.flush();
 
-    //setQuery('');
-    //assert.lengthOf(el.isolateScope()._options, 5, 'should have 5 options available');
-    //assert.lengthOf(_scope.options, 5, 'should have 5 options available');
-  //});
+    assert.lengthOf(el3.isolateScope()._options, 2, 'should have 2 options available');
+
+    setQuery(el3, '');
+    assert.lengthOf(el3.isolateScope()._options, 0, 'should have 0 options available');
+  });
 });

@@ -13,7 +13,7 @@ module.exports = function(config) {
 
       // our app
       'src/ez-select.js',
-      'dist/ez-select.tpl.js',
+      'dist/ez-select-tpl.js',
 
       // tests
       'test/*Spec.js',
