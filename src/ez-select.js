@@ -7,7 +7,7 @@ angular.module('ez.select', ['ez.object2array'])
   placeholder: 'Select an option',
   multiPlaceholder: 'Click to select an option',
   searchPlaceholder: 'Search...',
-  searchHelpText: 'Enter $ or more characters...',
+  searchHelpText: 'Enter $$ or more characters...',
   minSearchChars: 2,
   emptyText: 'No options found'
 })
@@ -17,8 +17,8 @@ angular.module('ez.select', ['ez.object2array'])
     restrict: 'EA',
     replace: true,
     scope: {
-      options: '=options',
-      selected: '=selected'
+      options: '=?options',
+      selected: '=?selected'
     },
     templateUrl: 'ez-select-tpl.html',
     compile: function(element, attrs) {
@@ -41,14 +41,16 @@ angular.module('ez.select', ['ez.object2array'])
       };
 
       return function (scope, element, attrs) {
-        scope.form = {query: ''};
-        scope.query = '';
         scope.multiple = !!attrs.multiple;
-        scope._options = [];
         scope.placeholder = attrs.placeholder || ezSelectConfig.placeholder;
         scope.multiPlaceholder = attrs.multiPlaceholder || ezSelectConfig.multiPlaceholder;
         scope.searchPlaceholder = attrs.searchPlaceholder || ezSelectConfig.searchPlaceholder;
         scope.emptyText = false;
+        scope.ajaxSearch = false;
+        scope.options = typeof scope.options !== 'undefined' ? scope.options : [];
+        scope.selected = typeof scope.selected !== 'undefined' ? scope.selected : (scope.multiple ? [] : '');
+        scope.query = ''; // used for filtering
+        scope.form = {query: ''}; // used for ajax requests
 
         if (!!attrs.url) {
           scope.ajaxSearch = true;
@@ -69,7 +71,7 @@ angular.module('ez.select', ['ez.object2array'])
           // update emptyText
           if (scope.ajaxSearch) {
             if (scope.form.query.length < minSearchChars) {
-              scope.emptyText = searchHelpText.replace('$', (parseInt(minSearchChars, 10) - scope.form.query.length));
+              scope.emptyText = searchHelpText.replace('$$', (parseInt(minSearchChars, 10) - scope.form.query.length));
             } else if (!scope._options.length) {
               scope.emptyText = emptyText;
             } else {
