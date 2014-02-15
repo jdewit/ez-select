@@ -108,12 +108,14 @@ angular.module('ez.select', ['ez.object2array'])
           e.stopPropagation();
 
           if (!option._selected) {
+            scope.$emit('ez_select.select', option);
             if (scope.multiple) {
               scope.selected.push(option.id);
             } else {
               scope.selected = option.id;
             }
           } else {
+            scope.$emit('ez_select.unselect', option);
             if (scope.multiple) {
               var i = scope.selected.indexOf(option.id);
               if (i !== -1) {
