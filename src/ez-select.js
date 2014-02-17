@@ -12,7 +12,7 @@ angular.module('ez.select', ['ez.object2array'])
   emptyText: 'No options found'
 })
 
-.directive('ezSelect', ['ezSelectConfig', '$document', '$q', '$http', 'object2arrayFilter', 'filterFilter', 'orderByFilter', function (ezSelectConfig, $document, $q, $http, object2arrayFilter, filterFilter, orderByFilter) {
+.directive('ezSelect', ['ezSelectConfig', '$document', '$timeout', '$q', '$http', 'object2arrayFilter', 'filterFilter', 'orderByFilter', function (ezSelectConfig, $document, $timeout, $q, $http, object2arrayFilter, filterFilter, orderByFilter) {
   return {
     restrict: 'EA',
     replace: true,
@@ -31,16 +31,9 @@ angular.module('ez.select', ['ez.object2array'])
       var searchHelpText = attrs.searchHelpText || ezSelectConfig.searchHelpText;
       var minSearchChars = attrs.minSearchChars || ezSelectConfig.minSearchChars;
 
-      var closeDropdown = function(e) {
-        if (e && $(e.target).parents('.ez-select-container').get(0) === element.get(0)) {
-          return false;
-        }
-
-        $document.unbind('click', closeDropdown);
-        element.removeClass('open');
-      };
 
       return function (scope, element, attrs) {
+        scope.showDropdown = false;
         scope.multiple = !!attrs.multiple;
         scope.placeholder = attrs.placeholder || ezSelectConfig.placeholder;
         scope.multiPlaceholder = attrs.multiPlaceholder || ezSelectConfig.multiPlaceholder;
@@ -87,16 +80,32 @@ angular.module('ez.select', ['ez.object2array'])
 
         };
 
+        scope.closeDropdown = function(e) {
+          if (typeof e !== 'undefined') {
+            if ($(e.target).parents('.ez-select-container').get(0) === element.get(0)) {
+              return false;
+            }
+            scope.showDropdown = false;
+            scope.$apply();
+          } else {
+            scope.showDropdown = false;
+          }
+
+          $document.unbind('click', scope.closeDropdown);
+        };
+
         /**
          * Open dropdown menu
          */
         scope.open = function(e) {
-          if (!element.hasClass('open')) {
-            element.addClass('open');
-            element.find('.search-box input').trigger('focus');
-            $document.click(closeDropdown);
+          if (!scope.showDropdown) {
+            scope.showDropdown = true;
+            $timeout(function() {
+              element.find('.search-input').trigger('focus');
+            });
+            $document.click(scope.closeDropdown);
           } else {
-            closeDropdown(e);
+            scope.closeDropdown(e);
           }
         };
 
@@ -127,7 +136,7 @@ angular.module('ez.select', ['ez.object2array'])
           }
 
           if (!scope.multiple) {
-            closeDropdown();
+            scope.closeDropdown();
           }
         };
 

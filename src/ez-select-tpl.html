@@ -1,4 +1,4 @@
-<div class="ez-select-container"> 
+<div class="ez-select-container" ng-class="{open: showDropdown}"> 
   <span class="caret"></span>
   <a class="btn btn-default ez-select-toggle" ng-click="open($event)" ng-class="{placeholder: !selected.length}" ng-if="!multiple">
     <span class="text">{{ selectedText }}</span>
