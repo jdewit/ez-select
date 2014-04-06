@@ -15,33 +15,9 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: {
-        curly: true,
-        eqeqeq: true,
-        eqnull: true,
-        browser: true,
-        globals: {
-          jQuery: true
-        },
+        jshintrc: '.jshintrc'
       },
       src: {
-        options: {
-          node: true,
-          globals: {
-            it: true,
-            beforeEach: true,
-            expect: true,
-            element: true,
-            browser: true,
-            module: true,
-            spyOn: true,
-            inject: true,
-            repeater: true,
-            describe: true,
-            angular: true,
-            $: true,
-            jQuery: true
-          }
-        },
         files: {
           src: ['src/**/*.js', 'test/**/*.js']
         },
@@ -70,7 +46,7 @@ module.exports = function(grunt) {
     },
     ngtemplates: {
       ezSelect: {
-        src:      'src/*.html',
+        src:      'src/ez-select-tpl.html',
         dest:     'dist/ez-select-tpl.js',
         options: {
           module: 'ez.select',
@@ -85,7 +61,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/ez-select.min.js': ['src/**/*.js']
+          'dist/ez-select.min.js': ['src/ez-select.js']
         }
       }
     },

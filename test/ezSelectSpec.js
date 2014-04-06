@@ -1,5 +1,5 @@
 describe('ez-select', function() {
-  var el, _scope, setQuery, $q, $httpBackend;
+  var el, el2, el3, _scope, setQuery, $q, $httpBackend;
 
   beforeEach(module('ez.select'));
 
@@ -120,7 +120,7 @@ describe('ez-select', function() {
   });
 
   it('should use ajax search to get options if url is set', function() {
-    $httpBackend.expectGET('/api/test/search?q=tw').respond([{id: "2", text: "Two"}, {id: "12", text: "Twelve"}]);
+    $httpBackend.expectGET('/api/test/search?q=tw').respond([{id: '2', text: 'Two'}, {id: '12', text: 'Twelve'}]);
 
     setQuery(el3, 'tw');
     $httpBackend.flush();
