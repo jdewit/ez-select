@@ -41,17 +41,23 @@ angular.module('ez.select', ['ez.object2array'])
         scope.searchPlaceholder = attrs.searchPlaceholder || ezSelectConfig.searchPlaceholder;
         scope.idField = attrs.idField || ezSelectConfig.idField;
         scope.textField = attrs.textField || ezSelectConfig.textField;
-        scope.emptyText = false;
-        scope.ajaxSearch = false;
-        scope.options = typeof scope.options !== 'undefined' ? scope.options : [];
-        scope.selected = typeof scope.selected !== 'undefined' ? scope.selected : (scope.multiple ? [] : '');
+        scope.emptyText = emptyText;
         scope.query = ''; // used for filtering
         scope.form = {query: ''}; // used for ajax requests
+
+        if (typeof scope.options === 'undefined') {
+          scope.options = [];
+        }
+
+        if (typeof scope.selected === 'undefined') {
+          scope.selected = (scope.multiple ? [] : '');
+        }
 
         if (!!attrs.url) {
           scope.ajaxSearch = true;
           scope.showSearchInput = true;
         } else {
+          scope.ajaxSearch = false;
           scope.showSearchInput = !!attrs.search;
         }
 
