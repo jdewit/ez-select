@@ -10,7 +10,7 @@ angular.module('ez.select').run(['$templateCache', function($templateCache) {
     "  <ul class=\"tag-container\" ng-click=\"open($event)\" ng-if=\"multiple\">\n" +
     "    <li ng-repeat=\"option in options | filter:{_selected:true}\">\n" +
     "      <a ng-click=\"select($event, option)\"><i class=\"glyphicon glyphicon-remove\"></i></a>\n" +
-    "      <span class=\"text\">{{ option.text }}</span>\n" +
+    "      <span class=\"text\">{{ option[textField] }}</span>\n" +
     "    </li>\n" +
     "    <li class=\"placeholder\" ng-if=\"!selected.length\">\n" +
     "      {{ multiPlaceholder }}\n" +
@@ -23,7 +23,7 @@ angular.module('ez.select').run(['$templateCache', function($templateCache) {
     "    <ul>\n" +
     "      <li ng-repeat=\"option in _options\" ng-class=\"{selected: option._selected}\">\n" +
     "        <a ng-click=\"select($event, option)\">\n" +
-    "          <span class=\"text\">{{ option.text }}</span>\n" +
+    "          <span class=\"text\">{{ option[textField] }}</span>\n" +
     "          <i ng-show=\"option._selected\" class=\"selected glyphicon glyphicon-ok\"></i>\n" +
     "        </a>\n" +
     "      </li>\n" +

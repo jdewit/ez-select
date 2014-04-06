@@ -4,6 +4,8 @@ angular.module('ez.select', ['ez.object2array'])
 
 .constant('ezSelectConfig', {
   method: 'GET',
+  idField: 'id',
+  textField: 'text',
   placeholder: 'Select an option',
   multiPlaceholder: 'Click to select an option',
   searchPlaceholder: 'Search...',
@@ -31,13 +33,14 @@ angular.module('ez.select', ['ez.object2array'])
       var searchHelpText = attrs.searchHelpText || ezSelectConfig.searchHelpText;
       var minSearchChars = attrs.minSearchChars || ezSelectConfig.minSearchChars;
 
-
       return function (scope, element, attrs) {
         scope.showDropdown = false;
         scope.multiple = !!attrs.multiple;
         scope.placeholder = attrs.placeholder || ezSelectConfig.placeholder;
         scope.multiPlaceholder = attrs.multiPlaceholder || ezSelectConfig.multiPlaceholder;
         scope.searchPlaceholder = attrs.searchPlaceholder || ezSelectConfig.searchPlaceholder;
+        scope.idField = attrs.idField || ezSelectConfig.idField;
+        scope.textField = attrs.textField || ezSelectConfig.textField;
         scope.emptyText = false;
         scope.ajaxSearch = false;
         scope.options = typeof scope.options !== 'undefined' ? scope.options : [];
@@ -77,7 +80,6 @@ angular.module('ez.select', ['ez.object2array'])
               scope.emptyText = false;
             }
           }
-
         };
 
         scope.closeDropdown = function(e) {
@@ -119,14 +121,14 @@ angular.module('ez.select', ['ez.object2array'])
           if (!option._selected) {
             scope.$emit('ez_select.select', option);
             if (scope.multiple) {
-              scope.selected.push(option.id);
+              scope.selected.push(option[scope.idField]);
             } else {
-              scope.selected = option.id;
+              scope.selected = option[scope.idField];
             }
           } else {
             scope.$emit('ez_select.unselect', option);
             if (scope.multiple) {
-              var i = scope.selected.indexOf(option.id);
+              var i = scope.selected.indexOf(option[scope.idField]);
               if (i !== -1) {
                 scope.selected.splice(i, 1);
               }
@@ -149,16 +151,16 @@ angular.module('ez.select', ['ez.object2array'])
           if (scope.multiple) {
             angular.forEach(scope.selected, function(selectedOption) {
               angular.forEach(scope.options, function(option) {
-                if (selectedOption.id === option.id) {
-                  str += option.text + ', ';
+                if (selectedOption[scope.idField] === option[scope.idField]) {
+                  str += option[scope.textField] + ', ';
                 }
               });
             });
             str = str.slice(0, -2);
           } else {
             angular.forEach(scope.options, function(option) {
-              if (option.id === scope.selected) {
-                str += option.text;
+              if (option[scope.idField] === scope.selected) {
+                str += option[scope.textField];
               }
             });
           }
@@ -180,8 +182,8 @@ angular.module('ez.select', ['ez.object2array'])
          * Watch query model and call search if changed
          * Cancel any previous requests
          */
-        var canceler = $q.defer();
         var req;
+        var canceler = $q.defer();
         scope.$watch('form.query', function(newVal, oldVal) {
           if (scope.ajaxSearch) {
             if (newVal && newVal !== oldVal && newVal.length >= minSearchChars) {
@@ -217,10 +219,10 @@ angular.module('ez.select', ['ez.object2array'])
         /**
          * Watch selected array and update the _selected variable on the options
          */
-        scope.$watchCollection('selected', function(newVal, oldVal) {
+        scope.$watchCollection('selected', function(newVal) {
           if (scope.multiple) {
             angular.forEach(scope.options, function(v) {
-              if (newVal.indexOf(v.id) !== -1) {
+              if (newVal.indexOf(v[scope.idField]) !== -1) {
                 v._selected = true;
               } else {
                 v._selected = false;
@@ -228,7 +230,7 @@ angular.module('ez.select', ['ez.object2array'])
             });
           } else {
             angular.forEach(scope.options, function(v) {
-              if (newVal === v.id) {
+              if (newVal === v[scope.idField]) {
                 v._selected = true;
               } else {
                 v._selected = false;

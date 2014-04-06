@@ -41,18 +41,18 @@
         $scope.options2 = [];
 
         $scope.options3 = {
-          '1': {id: '1', text: 'One'},
-          '2': {id: '2', text: 'Two'},
-          '3': {id: '3', text: 'Three'},
-          '4': {id: '4', text: 'Four'}, 
-          '5': {id: '5', text: 'Five'}, 
-          '6': {id: '6', text: 'Six'},
-          '7': {id: '7', text: 'Seven'}, 
-          '8': {id: '8', text: 'Eight'}, 
-          '9': {id: '9', text: 'Nine'},
-          '10': {id: '10', text: 'Ten'}, 
-          '11': {id: '11', text: 'Eleven'}, 
-          '12': {id: '12', text: 'Twelve'}
+          '1': {_id: '1', name: 'One'},
+          '2': {_id: '2', name: 'Two'},
+          '3': {_id: '3', name: 'Three'},
+          '4': {_id: '4', name: 'Four'}, 
+          '5': {_id: '5', name: 'Five'}, 
+          '6': {_id: '6', name: 'Six'},
+          '7': {_id: '7', name: 'Seven'}, 
+          '8': {_id: '8', name: 'Eight'}, 
+          '9': {_id: '9', name: 'Nine'},
+          '10': {_id: '10', name: 'Ten'}, 
+          '11': {_id: '11', name: 'Eleven'}, 
+          '12': {_id: '12', name: 'Twelve'}
         };
 
 
@@ -110,7 +110,7 @@
     <div class="row">
       <div class="col-md-4">
         <label>Single Select With Search & options in object format</label>
-        <ez-select options="options3" selected="selected3" data-search="true"></ez-select>
+        <ez-select options="options3" selected="selected3" data-search="true" data-id-field="_id" data-text-field="name"></ez-select>
       </div>
       <div class="col-md-8">
         <h5>Selected:</h5> 
