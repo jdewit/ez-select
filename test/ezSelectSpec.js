@@ -12,7 +12,12 @@ describe('ez-select', function() {
     el = angular.element('<ez-select options="options" selected="selectedOptions" data-multiple="true"></ez-select>');
 
     el2 = angular.element('<ez-select options="options2" selected="selectedOption2" search="true"></ez-select>');
-    el3 = angular.element('<ez-select options="options3" selected="selectedOption3" data-placeholder="Ajax Search" data-url="/api/test/search"></ez-select>');
+
+    _scope.config3 = {
+      minSearchChars: 1
+    };
+
+    el3 = angular.element('<ez-select options="options3" selected="selectedOption3" data-placeholder="Ajax Search" data-url="/api/test/search" config="config3"></ez-select>');
 
     // should sort Two, One, Three
     _scope.options = [
@@ -133,6 +138,7 @@ describe('ez-select', function() {
 
   it('should be able to override defaults', function() {
     assert.equal(el3.find('.ez-select-toggle .text').text(), 'Ajax Search', 'Set placeholder');
-    assert.equal(el3.find('.dropdown-menu li:last-child a').text(), 'Enter 2 or more characters...', 'Set placeholder');
+    assert.equal(el3.find('.dropdown-menu li:last-child a').text(), 'Enter 1 or more characters...', 'Set placeholder');
+    assert.equal(el3.isolateScope().config.minSearchChars, 1, 'Set config through config attribute');
   });
 });

@@ -2,20 +2,21 @@
 <html>
 
 <head>
+
+
+  <!--dependencies start -->
   <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.css" rel="stylesheet">
   <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-
-  <link href="dist/ez-select.min.css" rel="stylesheet">
-
-  <style>
-  </style>
 
   <script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.js"></script>
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
   <script type="text/javascript" src="//code.angularjs.org/1.2.9/angular-mocks.js"></script>
   <script src="https://rawgithub.com/jdewit/ez-object2array/master/dist/ez-object2array.min.js"></script>
+  <script src="https://rawgithub.com/jdewit/ez-focus/master/dist/ez-focus.min.js"></script>
+  <!--dependencies end -->
 
-  <script src="dist/ez-select.min.js"></script>
+  <link href="dist/ez-select.min.css" rel="stylesheet">
+  <script src="src/ez-select.js"></script>
   <script src="dist/ez-select-tpl.js"></script>
 
   <script>
@@ -23,25 +24,32 @@
 
       .controller('AppCtrl', ['$scope', function AppCtrl($scope) {
 
-          $scope.form = {
-            options1: [
-              {_id: '1', text: 'One'}, 
-              {_id: '2', text: 'Two'}, 
-              {_id: '3', text: 'Three'},
-              {_id: '4', text: 'Four'}, 
-              {_id: '5', text: 'Five'}, 
-              {_id: '6', text: 'Six'},
-              {_id: '7', text: 'Seven'}, 
-              {_id: '8', text: 'Eight'}, 
-              {_id: '9', text: 'Nine'},
-              {_id: '10', text: 'Ten'}, 
-              {_id: '11', text: 'Eleven'}, 
-              {_id: '12', text: 'Twelve'}
-            ],
-            selected1: ['2', '5']
-          };
+        $scope.form = {
+          options1: [
+            {_id: '1', text: 'One'}, 
+            {_id: '2', text: 'Two'}, 
+            {_id: '3', text: 'Three'},
+            {_id: '4', text: 'Four'}, 
+            {_id: '5', text: 'Five'}, 
+            {_id: '6', text: 'Six'},
+            {_id: '7', text: 'Seven'}, 
+            {_id: '8', text: 'Eight'}, 
+            {_id: '9', text: 'Nine'},
+            {_id: '10', text: 'Ten'}, 
+            {_id: '11', text: 'Eleven'}, 
+            {_id: '12', text: 'Twelve'}
+          ],
+          selected1: ['2', '5']
+        };
 
         $scope.options2 = [];
+        $scope.selected2 = '';
+        $scope.config2 = {
+          placeholder: "Ajax Search",
+          url: "/api/test/search",
+          minSearchChars: "1"
+        };
+
 
         $scope.options3 = {
           '1': {_id: '1', name: 'One'},
@@ -57,9 +65,6 @@
           '11': {_id: '11', name: 'Eleven'}, 
           '12': {_id: '12', name: 'Twelve'}
         };
-
-
-        $scope.selected2 = '';
         $scope.selected3 = '10';
       }])
 
@@ -94,14 +99,14 @@
       </div>
       <div class="col-md-8">
         <h5>Selected</h5>
-        {{ selected1 }}
+        {{ form.selected1 }}
       </div>
     </div>
     <hr>
     <div class="row">
       <div class="col-md-4">
         <label>Single Select With AJAX Search</label>
-        <ez-select options="options2" selected="selected2" data-placeholder="Ajax Search" data-url="/api/test/search" data-min-search-chars="1" style="width: 300px;"></ez-select>
+        <ez-select config="config2" options="options2" selected="selected2"></ez-select>
       </div>
       <div class="col-md-8">
         <h5>Selected:</h5> 

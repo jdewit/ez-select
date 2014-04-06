@@ -1,12 +1,12 @@
 <div class="ez-select-container" ng-class="{open: showDropdown}"> 
   <span class="caret"></span>
-  <a class="btn btn-default ez-select-toggle" ng-click="open($event)" ng-class="{placeholder: !selected.length}" ng-if="!multiple">
+  <a class="btn btn-default ez-select-toggle" ng-click="open($event)" ng-class="{placeholder: !selected.length}" ng-if="!config.multiple">
     <span class="text">{{ selectedText }}</span>
   </a>
-  <ul class="tag-container" ng-click="open($event)" ng-if="multiple">
-    <li ng-repeat="option in options | filter:{_selected:true}">
+  <ul class="tag-container" ng-click="open($event)" ng-if="config.multiple">
+    <li ng-repeat="option in options | filter: {_selected: true}">
       <a ng-click="select($event, option)"><i class="glyphicon glyphicon-remove"></i></a>
-      <span class="text">{{ option[textField] }}</span>
+      <span class="text">{{ option[config.textField] }}</span>
     </li>
     <li class="placeholder" ng-if="!selected.length">
       {{ multiPlaceholder }}
@@ -14,12 +14,12 @@
   </ul>
   <div class="dropdown-menu">
     <div class="search-box" ng-show="showSearchInput">
-      <input ng-model="form.query" type="text" placeholder="{{ searchPlaceholder }}" class="search-input input-block-level form-control">
+      <input ng-model="form.query" type="text" placeholder="{{ config.searchPlaceholder }}" class="search-input input-block-level form-control" ez-focus>
     </div>
     <ul>
       <li ng-repeat="option in _options" ng-class="{selected: option._selected}">
         <a ng-click="select($event, option)">
-          <span class="text">{{ option[textField] }}</span>
+          <span class="text">{{ option[config.textField] }}</span>
           <i ng-show="option._selected" class="selected glyphicon glyphicon-ok"></i>
         </a>
       </li>
