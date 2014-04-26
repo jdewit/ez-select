@@ -138,7 +138,14 @@ angular.module('ez.select', ['ez.object2array'])
         scope.open = function(e) {
           if (!scope.showDropdown) {
             scope.showDropdown = true;
-            $document.click(scope.closeDropdown);
+
+            if (scope.showSearchInput) { // focus search input
+              $timeout(function() {
+                element.find('input.search-input').trigger('focus');
+              }, 50);
+            }
+
+            $document.on('click', scope.closeDropdown);
           } else {
             scope.closeDropdown(e);
           }

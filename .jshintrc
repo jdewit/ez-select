@@ -37,6 +37,7 @@
         "spyOn": true,
         "assert": true,
         "inject": true,
+        "by": true,
         "repeater": true,
         "describe": true,
         "angular": true
