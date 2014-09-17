@@ -6,7 +6,7 @@
   <ul class="tag-container" ng-click="open($event)" ng-if="config.multiple">
     <li ng-repeat="option in options | filter: {_selected: true}">
       <a ng-click="select($event, option)"><i class="glyphicon glyphicon-remove"></i></a>
-      <span class="text">{{ option[config.textField] }}</span>
+      <span class="text" ng-bind="config.setHtml(option)"></span>
     </li>
     <li class="placeholder" ng-if="!selected.length">
       {{ multiPlaceholder }}
@@ -19,7 +19,7 @@
     <ul>
       <li ng-repeat="option in _options" ng-class="{selected: option._selected}">
         <a ng-click="select($event, option)">
-          <span class="text">{{ option[config.textField] }}</span>
+          <span class="text" ng-bind-html="config.getText(option)"></span>
           <i ng-show="option._selected" class="selected glyphicon glyphicon-ok"></i>
         </a>
       </li>

@@ -14,7 +14,10 @@ describe('ez-select', function() {
     el2 = angular.element('<ez-select options="options2" selected="selectedOption2" search="true"></ez-select>');
 
     _scope.config3 = {
-      minSearchChars: 1
+      minSearchChars: 1,
+      setHtml: function(v) {
+        return v.text + ' (custom)';
+      }
     };
 
     el3 = angular.element('<ez-select options="options3" selected="selectedOption3" data-placeholder="Ajax Search" data-url="/api/test/search" config="config3"></ez-select>');
@@ -140,5 +143,14 @@ describe('ez-select', function() {
     assert.equal(el3.find('.ez-select-toggle .text').text(), 'Ajax Search', 'Set placeholder');
     assert.equal(el3.find('.dropdown-menu li:last-child a').text(), 'Enter 1 or more characters...', 'Set placeholder');
     assert.equal(el3.isolateScope().config.minSearchChars, 1, 'Set config through config attribute');
+  });
+
+  it('should allow user to configure text output in options', function() {
+    $httpBackend.expectGET('/api/test/search?q=tw').respond([{id: '2', text: 'Two'}, {id: '12', text: 'Twelve'}]);
+
+    setQuery(el3, 'tw');
+    $httpBackend.flush();
+
+    assert.equal(el3.find('.dropdown-menu li:eq(1) .text').text(), 'Two (custom)', 'should use custom html function');
   });
 });
