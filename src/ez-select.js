@@ -35,7 +35,7 @@ angular.module('ez.select', ['ez.object2array'])
  * Usage:
  * <ez-select selected="form.selectedOptions" options="availableOptions" data-multiple="true"></ez-select>
  */
-.directive('ezSelect', ['ezSelectConfig', '$document', '$timeout', '$q', '$http', 'object2arrayFilter', 'filterFilter', 'orderByFilter', function (ezSelectConfig, $document, $timeout, $q, $http, object2arrayFilter, filterFilter, orderByFilter) {
+.directive('ezSelect', ['ezSelectConfig', '$document', '$timeout', '$q', '$http', '$sce', 'object2arrayFilter', 'filterFilter', 'orderByFilter', function (ezSelectConfig, $document, $timeout, $q, $http, $sce, object2arrayFilter, filterFilter, orderByFilter) {
   return {
     restrict: 'EA',
     replace: true,
@@ -59,6 +59,13 @@ angular.module('ez.select', ['ez.object2array'])
           config[key] = attrs[key];
         }
       });
+
+      // define getText function if user did not configure one
+      if (typeof config.getText === 'undefined') {
+        config.getText = function(v) {
+          return $sce.trustAsHtml(v[config.textField]);
+        };
+      }
 
       return function (scope, element) {
         // merge scope config with the rest of the config
@@ -106,8 +113,7 @@ angular.module('ez.select', ['ez.object2array'])
             } else {
               scope.emptyText = false;
             }
-          } else {
-            if (!scope._options.length) {
+          } else { if (!scope._options.length) {
               scope.emptyText = scope.config.emptyText;
             } else {
               scope.emptyText = false;
