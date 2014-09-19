@@ -26,7 +26,8 @@ angular.module('ez.select', ['ez.object2array'])
   searchHelpText: 'Enter $$ or more characters...', // Help text to show in dropdown as a user types in the search input ($$ gets replaced by the number of "minSearchChars" required to issue a search call
   minSearchChars: 2, // minimum number of characters to require before making a search request
   url: '', // the url to call for a search request
-  emptyText: 'No options found' // text to show in the dropdown when no results are found
+  emptyText: 'No options found', // text to show in the dropdown when no results are found
+  updateText: true, // update the placeholder text with the selected option(s)
 })
 
 /**
@@ -75,6 +76,7 @@ angular.module('ez.select', ['ez.object2array'])
         scope.emptyText = config.emptyText;
         scope.query = ''; // used for filtering
         scope.form = {query: ''}; // used for ajax requests
+        scope.selectedText = config.placeholder;
 
         if (typeof scope.options === 'undefined') {
           scope.options = [];
@@ -192,13 +194,17 @@ angular.module('ez.select', ['ez.object2array'])
          * Update the selected options text
          */
         scope.updateText = function() {
+          if (scope.config.updateText === false) {
+            return;
+          }
+
           var str = '';
 
           if (scope.config.multiple) {
             angular.forEach(scope.selected, function(selectedOption) {
               angular.forEach(scope.options, function(option) {
                 if (selectedOption[scope.config.idField] === option[scope.config.idField]) {
-                  str += option[scope.config.textField] + ', ';
+                  str += scope.config.getText(option) + ', ';
                 }
               });
             });
@@ -206,7 +212,7 @@ angular.module('ez.select', ['ez.object2array'])
           } else {
             angular.forEach(scope.options, function(option) {
               if (option[scope.config.idField] === scope.selected) {
-                str += option[scope.config.textField];
+                str += scope.config.getText(option);
               }
             });
           }
