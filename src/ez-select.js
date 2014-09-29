@@ -28,6 +28,7 @@ angular.module('ez.select', ['ez.object2array'])
   url: '', // the url to call for a search request
   emptyText: 'No options found', // text to show in the dropdown when no results are found
   updateText: true, // update the placeholder text with the selected option(s)
+  setSelected: true, // set _selected field on option
 })
 
 /**
@@ -272,22 +273,24 @@ angular.module('ez.select', ['ez.object2array'])
          * Watch selected array and update the _selected variable on the options
          */
         scope.$watchCollection('selected', function(newVal) {
-          if (scope.config.multiple) {
-            angular.forEach(scope.options, function(v) {
-              if (newVal.indexOf(v[scope.config.idField]) !== -1) {
-                v._selected = true;
-              } else {
-                v._selected = false;
-              }
-            });
-          } else {
-            angular.forEach(scope.options, function(v) {
-              if (newVal === v[scope.config.idField]) {
-                v._selected = true;
-              } else {
-                v._selected = false;
-              }
-            });
+          if (scope.config.setSelected) {
+            if (scope.config.multiple) {
+              angular.forEach(scope.options, function(v) {
+                if (newVal.indexOf(v[scope.config.idField]) !== -1) {
+                  v._selected = true;
+                } else {
+                  v._selected = false;
+                }
+              });
+            } else {
+              angular.forEach(scope.options, function(v) {
+                if (newVal === v[scope.config.idField]) {
+                  v._selected = true;
+                } else {
+                  v._selected = false;
+                }
+              });
+            }
           }
 
           scope.updateText();
