@@ -2,7 +2,7 @@
   "name": "ez-select",
   "description": "Angular select directive",
   "keywords": [],
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": false,
   "author": "Joris de Wit",
   "repository": {
