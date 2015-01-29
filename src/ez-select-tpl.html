@@ -6,15 +6,15 @@
   <ul class="tag-container" ng-click="open($event)" ng-if="config.multiple">
     <li ng-repeat="option in options | filter: {_selected: true}">
       <a ng-click="select($event, option)"><i class="glyphicon glyphicon-remove"></i></a>
-      <span class="text" ng-bind="config.setHtml(option)"></span>
+      <span class="text" ng-bind="config.getText(option)"></span>
     </li>
     <li class="placeholder" ng-if="!selected.length">
       {{ multiPlaceholder }}
     </li>
   </ul>
   <div class="dropdown-menu">
-    <div class="search-box" ng-show="showSearchInput">
-      <input ng-model="form.query" type="text" placeholder="{{ config.searchPlaceholder }}" class="search-input input-block-level form-control" ez-focus>
+    <div ng-form="ezSelectForm" class="search-box" ng-show="showSearchInput">
+      <input name="ez_select_query" ng-model="form.query" type="text" placeholder="{{ config.searchPlaceholder }}" class="search-input input-block-level form-control" ez-focus>
     </div>
     <ul>
       <li ng-repeat="option in _options" ng-class="{selected: option._selected}">

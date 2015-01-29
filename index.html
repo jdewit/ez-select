@@ -103,16 +103,26 @@
       </div>
     </div>
     <hr>
-    <div class="row">
-      <div class="col-md-4">
-        <label>Single Select With AJAX Search</label>
-        <ez-select config="config2" options="options2" selected="selected2"></ez-select>
+    <form name="ajaxForm">
+      <div class="row">
+        <div class="col-md-4">
+          <label>Single Select With AJAX Search</label>
+          <ez-select config="config2" options="options2" selected="selected2"></ez-select>
+        </div>
+        <div class="col-md-8">
+          <table>
+            <tr>
+              <td>Selected:</td>
+              <td>{{ selected2 }}</td>
+            </tr>
+            <tr>
+              <td>Dirty:</td>
+              <td>{{ ajaxForm.$dirty }}</td>
+            </tr>
+          </table>
+        </div>
       </div>
-      <div class="col-md-8">
-        <h5>Selected:</h5> 
-        {{ selected2 }}
-      </div>
-    </div>
+    </form>
     <hr>
     <div class="row">
       <div class="col-md-4">

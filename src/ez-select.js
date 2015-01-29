@@ -150,6 +150,7 @@ angular.module('ez.select', ['ez.object2array'])
 
             if (scope.showSearchInput) { // focus search input
               $timeout(function() {
+                scope.ezSelectForm.ez_select_query.$pristine = false;
                 element.find('input.search-input').trigger('focus');
               }, 50);
             }
